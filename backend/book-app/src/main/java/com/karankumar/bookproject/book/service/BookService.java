@@ -1,20 +1,3 @@
-/*
-   The book project lets a user keep track of different books they would like to read, are currently
-   reading, have read or did not finish.
-   Copyright (C) 2020  Karan Kumar
-
-   This program is free software: you can redistribute it and/or modify it under the terms of the
-   GNU General Public License as published by the Free Software Foundation, either version 3 of the
-   License, or (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-   PURPOSE.  See the GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along with this program.
-   If not, see <https://www.gnu.org/licenses/>.
-*/
-
 package com.karankumar.bookproject.book.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,7 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.logging.Logger;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -50,7 +33,7 @@ import static java.util.stream.Collectors.toSet;
 @Log
 @Transactional
 public class BookService {
-
+  private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
   private final AuthorService authorService;
   private final BookRepository bookRepository;
   private final PublisherService publisherService;
@@ -110,6 +93,7 @@ public class BookService {
   public List<Book> findAll(Integer pageNumber) {
     int page = pageNumber == null ? 0 : pageNumber;
     Pageable pageable = PageRequest.of(page, 50);
+    LOGGER.info("Retrieved all books: " + bookRepository.findAllBooks(pageable));
     return bookRepository.findAllBooks(pageable);
   }
 
@@ -155,7 +139,7 @@ public class BookService {
     mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
     mapper.enable(SerializationFeature.INDENT_OUTPUT);
     ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
-
+    LOGGER.info("Retrieved all books: " + jsonWriter.writeValueAsString(books));
     return jsonWriter.writeValueAsString(books);
   }
 
@@ -193,6 +177,7 @@ public class BookService {
     Optional.ofNullable(bookPatchDto.getSeriesPosition()).ifPresent(book::setSeriesPosition);
     Optional.ofNullable(bookPatchDto.getEdition()).ifPresent(book::setEdition);
     Optional.ofNullable(bookPatchDto.getBookRecommendedBy()).ifPresent(book::setBookRecommendedBy);
+    Optional.ofNullable(bookPatchDto.getBookCover()).ifPresent(book::setBookCover);
     Optional.ofNullable(bookPatchDto.getIsbn()).ifPresent(book::setIsbn);
     Optional.ofNullable(bookPatchDto.getYearOfPublication()).ifPresent(book::setYearOfPublication);
     Optional.ofNullable(bookPatchDto.getBookReview()).ifPresent(book::setBookReview);

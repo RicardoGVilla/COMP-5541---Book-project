@@ -49,6 +49,9 @@ public class BookPatchDto {
 
   @JsonProperty("bookRecommendedBy")
   private String bookRecommendedBy;
+  
+  @JsonProperty("bookCover")
+  private String bookCover;
 
   @JsonProperty("isbn")
   private String isbn;

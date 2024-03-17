@@ -113,6 +113,7 @@ class JwtTokenVerifierIntegrationTest {
     // given
     Authentication authentication =
         new UsernamePasswordAuthenticationToken("user@user.user", "password");
+        new UsernamePasswordAuthenticationToken("mail@mail.com", "1234");
     Authentication authentication1 = authenticationManager.authenticate(authentication);
     String token =
         Jwts.builder()
@@ -139,6 +140,7 @@ class JwtTokenVerifierIntegrationTest {
     // given
     Authentication authentication =
         new UsernamePasswordAuthenticationToken("user@user.user", "password");
+        
     Authentication authentication1 = authenticationManager.authenticate(authentication);
     String token =
         Jwts.builder()
@@ -163,6 +165,7 @@ class JwtTokenVerifierIntegrationTest {
     // given
     Authentication authentication =
         new UsernamePasswordAuthenticationToken("user@user.user", "password");
+        new UsernamePasswordAuthenticationToken("mail@mail.com", "1234");
     Authentication authentication1 = authenticationManager.authenticate(authentication);
     String token =
         Jwts.builder()

@@ -40,7 +40,7 @@ function EmailAddress(props: EmailProps): ReactElement {
             className={props.classHelper}>
           {props.errorMessage}
         </Typography>}
-    />
+      />
     </div>
   )
 }

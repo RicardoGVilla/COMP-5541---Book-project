@@ -62,7 +62,7 @@ If not, see <https://www.gnu.org/licenses/>.
     justify-content: space-between;
 }
 .shelf-modal-button {
-    width: 100px;
+    width: auto;
 }
 
 @media screen and (max-width: 600px) {

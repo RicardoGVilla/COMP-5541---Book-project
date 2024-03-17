@@ -1,20 +1,3 @@
-/*
-The book project lets a user keep track of different books they would like to read, are currently
-reading, have read or did not finish.
-Copyright (C) 2021  Karan Kumar
-
-This program is free software: you can redistribute it and/or modify it under the terms of the
-GNU General Public License as published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this program.
-If not, see <https://www.gnu.org/licenses/>.
-*/
-
 import React, { Component } from "react";
 import Modal, { IModalProps } from "../shared/components/Modal";
 import Button from "@material-ui/core/Button";
@@ -24,20 +7,59 @@ import "./ShelfModal.css";
 import Hidden from "@material-ui/core/Hidden";
 import HttpClient from "../shared/http/HttpClient";
 import Endpoints from "../shared/api/endpoints";
+import { Book } from "../shared/types/Book";
 
-type MyState = { name: string, showError: boolean, showInfo: boolean, msg: string };
-export default class ShelfModal extends Component<IModalProps, MyState> {
-    constructor(props: never) {
+interface IShelfModalProps extends IModalProps {
+    shelves: string[];
+    setShelves: (newShef: string[]) => void;
+    shelf: {
+        name: string;
+    };
+  }
+
+
+type MyState = { name: string, showError: boolean, showInfo: boolean, msg: string, shelves: string[], setShelves: (newShelf: string[]) => void, shelf: {name: string}};
+export default class ShelfModal extends Component<IShelfModalProps, MyState > {
+    constructor(props: IModalProps & MyState ) {
         super(props);
         this.state = {
               name: "",
               showError: false,
               showInfo: false,
-              msg: ""
+              msg: "",
+              shelves: props.shelves,
+              setShelves: props.setShelves,
+              shelf: props.shelf
           };
         this.submitShelf = this.submitShelf.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
+
+    
+    
+    componentDidMount(): void {
+        const { shelf } = this.props;
+        console.log(shelf);
+        
+        if (shelf && shelf.name) {
+            this.setState({
+                name: shelf.name
+            });
+        }
+    }
+
+    // componentDidMount(): void {
+    //     if(Object.keys(this.state.shelf).length > 0) {
+    //         console.log(this.state.shelf);
+            
+    //         this.setState({
+    //             name: this.state.shelf.name
+    //         })
+    //         console.log(this.state.shelf.name);
+    //         console.log(this.state.name);
+    //     } 
+    // }
+
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState( { name : event.target.value });
@@ -51,21 +73,37 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
             this.setState({showError: true, msg: "Shelf name is too long"});
             return;
         }
-        HttpClient.post(Endpoints.shelf, shelfName).then(() => {
-            this.setState({showError: false, showInfo: true, msg: "Shelf saved successfully"});  
-        }).catch((error: Record<string, string>) => {
-            console.error(error);
-            this.setState({showError: true, showInfo: false, msg: "Some error occurred"});    
-        });
+        // HttpClient.post(Endpoints.shelf, shelfName).then(() => {
+        //     this.setState({showError: false, showInfo: true, msg: "Shelf saved successfully"});  
+        // }).catch((error: Record<string, string>) => {
+        //     console.error(error);
+        //     this.setState({showError: true, showInfo: false, msg: "Some error occurred"});    
+        // });
+
+        if([shelfName].includes('')){
+            this.setState({showError: true, msg: "Please write a name"});
+            return;
+        }
+
+        this.setState({showError: false});
+
+        console.log(shelfName)
+                
+        this.props.setShelves([...this.props.shelves, shelfName]);
+
+        this.setState({name: ''});
+        this.props.onClose?.();
     };
+
+    
 
     render(): JSX.Element {
         return (
             <div>
                 <Modal open={this.props.open} onClose={this.props.onClose}>
                     <div className="shelf-modal-container">
-                        <div className="modal-content">
-                            <div className="modal-title">Add shelf</div>
+                        <div className="shelf-modal-content">
+                            <div className="modal-title">{this.state.name ? 'Edit shelf' : 'Add shelf'}</div>
                             <div className="shelf-modal-desc-container">
                                 <Hidden smDown implementation="css">
                                     <div className="shelf-modal-desc-items">
@@ -79,6 +117,20 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
                                             onChange={this.handleChange}
                                         />
                                     </div>
+                                    {this.state.name ? (
+                                        <div className="shelf-modal-button-delete">
+                                            <Button
+                                                className="shelf-modal-button"
+                                                variant="contained"
+                                                color="secondary"
+                                                fullWidth
+                                                disableElevation
+                                            >
+                                                Delete Shelf
+                                            </Button>
+                                        </div> 
+                                    ) : (<div></div>)}
+                                    
                                 </Hidden>
                                 <Hidden mdUp implementation="css">
                                     <div className="shelf-modal-desc-items">
@@ -96,7 +148,6 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
                             </div>
                         </div>
                         <div className="modal-form-spacer" />
-
                         <div className="shelf-button-container">
                             <Button
                                 className="shelf-modal-button"
@@ -113,23 +164,21 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
                                 color="primary"
                                 disableElevation
                             >
-                                Add shelf
+                                {this.state.name ? 'Edit shelf' : 'Add shelf'}
                             </Button>
                         </div>
-                        <div>
-                         { (this.state.showError || this.state.showInfo) ?
-                         
-                        <Alert variant="filled" severity={this.state.showError? "error" : "info"}>
-                            {this.state.msg}
-                        </Alert>
-                        : <></>
-                        }
-                      </div>
+                        {/* <div>
+                            { (this.state.showError || this.state.showInfo) ?
+                            
+                            <Alert variant="filled" severity={this.state.showError? "error" : "info"}>
+                                {this.state.msg}
+                            </Alert>
+                            : <></>
+                            }
+                        </div> */}
                     </div>
-                    
                 </Modal>
             </div>
         );
     }
-
 }
