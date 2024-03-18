@@ -26,6 +26,9 @@ import lombok.Data;
 @Data
 @ExcludeFromJacocoGeneratedReport
 public class BookPatchDto {
+  @JsonProperty("id")
+  private Long id;
+  
   @JsonProperty("title")
   private String title;
 

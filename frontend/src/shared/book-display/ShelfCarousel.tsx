@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import './ShelfCarousel.css'
 import { Paper } from '@material-ui/core';
 import { Book } from '../types/Book';
@@ -9,26 +9,51 @@ import { BOOK_OVERVIEW } from '../routes'
 import { Create } from "@material-ui/icons";
 
 
+
 type BookProps = {
     title: string;
     img: string;
-    key: number;
+    id: number;
 }
 
+interface StateProps {
+    title: string;
+}
+
+
 function ShelfBook(props: BookProps): JSX.Element {
+    
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const displayTitle = props.title.length > 12 ? 
                         (props.title.substring(0, 12) + "...") : props.title;
 
+    const linkProps = {
+        to:  {
+            pathname: `${BOOK_OVERVIEW}/${props.id}`,
+            state: { title: props.title }
+        },
+        style: { textDecoration: 'none', color: 'black' },
+        key: props.id,
+    };
+    
+   
     return (
-        <Link to={ BOOK_OVERVIEW + "/" + props.key }
-        style={{ textDecoration: 'none', color: 'black' }} key={props.key}>
+        // <Link
+        //     to={{
+        //         pathname: `${BOOK_OVERVIEW}/${props.key}`,
+        //         state: { title: props.title } as StateProps
+        //     }}
+        //         style={{ textDecoration: 'none', color: 'black' }}
+        //         key={props.key}
+        // >
+
+        <Link {...linkProps}> 
             <Paper className={bookClass} variant="elevation" square={false}>
                 {(bookClass !== "book") && <div className="book-spine"></div>}
                 {displayTitle}
             </Paper>
         </Link>
-    )
+    );
 }
 
 
@@ -76,7 +101,7 @@ export default class ShelfCarousel extends Component<ShelfCarouselProps, IShelfC
         const elements = Array<ReactElement>();
         const maxBooksToDisplay = Math.min(books.length, 6)
         for (let i = 0; i < maxBooksToDisplay; i++) {
-            elements.push(<ShelfBook key={i} title={books[i].title} img={books[i].img} />)
+            elements.push(<ShelfBook key={i} id={i} title={books[i].title} img={books[i].img} />)
             // console.log(books);
         }
         return elements;

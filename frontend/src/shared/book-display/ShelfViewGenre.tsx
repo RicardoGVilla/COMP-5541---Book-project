@@ -4,7 +4,6 @@ import ShelfCarousel from "./ShelfCarousel";
 
 interface IShelfState {
     bookList: Book[];
-    readBooks: Book[];
     searchText: string;
 }
 
@@ -12,7 +11,6 @@ export default class ShelfViewGenre extends Component<IShelfState, IShelfState> 
     constructor(props: IShelfState) {
         super(props);
         this.state = {
-            readBooks: props.readBooks,
             bookList: props.bookList,
             searchText: props.searchText
         };

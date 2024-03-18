@@ -39,7 +39,7 @@ export default class ShelfModal extends Component<IShelfModalProps, MyState > {
     
     componentDidMount(): void {
         const { shelf } = this.props;
-        console.log(shelf);
+        // console.log(shelf);
         
         if (shelf && shelf.name) {
             this.setState({

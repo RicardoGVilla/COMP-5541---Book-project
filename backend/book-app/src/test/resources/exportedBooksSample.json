@@ -1,6 +1,7 @@
 {
   "AllBooks": [
     {
+      "id": null,
       "title": "Book Name",
       "numberOfPages": null,
       "pagesRead": null,
@@ -27,6 +28,7 @@
       "publishers": []
     },
     {
+      "id": 0,
       "title": "Another Book Name",
       "numberOfPages": 420,
       "pagesRead": 42,

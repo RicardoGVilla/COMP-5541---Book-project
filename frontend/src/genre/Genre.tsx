@@ -17,7 +17,6 @@ interface IState {
     showBookModal: boolean;
     showListView: boolean;
     bookList: Book[];
-    readBooks: Book[];
     searchVal: string;
 }
 
@@ -30,7 +29,6 @@ class Genre extends Component<Record<string, unknown>, IState> {
             showBookModal: false,
             showListView: false,
             bookList: [],
-            readBooks: [],
             searchVal: ''
         };
         this.onAddShelf = this.onAddShelf.bind(this);
@@ -39,25 +37,12 @@ class Genre extends Component<Record<string, unknown>, IState> {
         this.onAddBookModalClose = this.onAddBookModalClose.bind(this);
         this.onToggleListView = this.onToggleListView.bind(this);
         this.getBooks = this.getBooks.bind(this);
-        this.getReadBooks = this.getReadBooks.bind(this);
     }
 
     componentDidMount(): void {
         this.getBooks();
-        this.getReadBooks();
         this.trackCurrentDeviceSize();
     }
-
-    getReadBooks(): void {
-        HttpClient.get(Endpoints.read).then((readBooks: Book[]) => {
-            this.setState(state => ({
-                readBooks: Array.isArray(readBooks) ? readBooks : state.readBooks
-            }));
-        }).catch((error: Record<string, string>) => {
-            console.error('error: ', error);
-        });
-    }
-
 
     getBooks(): void {
         HttpClient.get(Endpoints.books).then((response: Book[]) => {
@@ -137,10 +122,8 @@ class Genre extends Component<Record<string, unknown>, IState> {
                         ) :
                             <ShelfViewGenre
                                 key={[
-                                    ...this.state.readBooks,
                                     ...this.state.bookList,
                                 ].length + this.state.searchVal}
-                                readBooks={this.state.readBooks} 
                                 bookList={this.state.bookList} 
                                 searchText={this.state.searchVal} />
                     }
