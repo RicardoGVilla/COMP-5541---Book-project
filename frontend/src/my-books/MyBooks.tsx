@@ -109,7 +109,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             this.setState(state => ({
                 readingBooks: Array.isArray(readingBooks) ? readingBooks : state.readingBooks
             }));
-        }).catch((error: Record<string, string>) => {
+        }).catch((error: Record<string, string>) => {   
             console.error('error: ', error);
         });
     }

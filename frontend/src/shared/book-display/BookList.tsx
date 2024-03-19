@@ -34,6 +34,40 @@ interface SortingConfig {
   ascendingOrder: boolean,
 }
 
+function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]): Book[] {
+  const genreCounts: { [genre: string]: number } = {};
+  Books.forEach((book) => {
+      book.bookGenre.forEach((genre) => {
+          genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+      });
+  });
+
+  const sortedGenres = Object.keys(genreCounts).sort((a, b) => genreCounts[b] - genreCounts[a]);
+  const mostReadGenre = sortedGenres[0];
+  const secondMostReadGenre = sortedGenres[1];
+
+  const authorCounts: { [author: string]: number } = {};
+  Books.forEach((book) => {
+      const authorName = book.author.fullName;
+      authorCounts[authorName] = (authorCounts[authorName] || 0) + 1;
+  });
+
+  const sortedAuthors = Object.keys(authorCounts).sort((a, b) => authorCounts[b] - authorCounts[a]).slice(0, 5);
+
+  const recommendedBooks = Books.filter((book) => {
+      return (
+          (book.bookGenre.includes(mostReadGenre) || book.bookGenre.includes(secondMostReadGenre)) &&
+          sortedAuthors.includes(book.author.fullName) &&
+          !readBooks.some((readBook) => readBook.id === book.id) &&
+          !readingBooks.some((readingBook) => readingBook.id === book.id)
+      );
+  });
+
+  const shuffledBooks = recommendedBooks.sort(() => Math.random() - 0.5);
+
+  return shuffledBooks.slice(0, 2);
+}
+
 export default class BookList extends Component <BookListProps, BookListProps> {
   constructor(props: BookListProps) {
     super(props);
