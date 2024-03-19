@@ -12,8 +12,12 @@ import { Create } from "@material-ui/icons";
 
 type BookProps = {
     title: string;
+    author: string;
+    rating: number;
     img: string;
     id: number;
+    genre: string[];
+    numPages: number;
 }
 
 interface StateProps {
@@ -30,8 +34,14 @@ function ShelfBook(props: BookProps): JSX.Element {
     const linkProps = {
         to:  {
             pathname: `${BOOK_OVERVIEW}/${props.id}`,
-            state: { title: props.title }
-        },
+            state: { 
+                title: props.title,
+                author: props.author,
+                rating: props.rating,
+                genre: props.genre, 
+                numPages: props.numPages
+            } 
+        } ,
         style: { textDecoration: 'none', color: 'black' },
         key: props.id,
     };
@@ -101,7 +111,16 @@ export default class ShelfCarousel extends Component<ShelfCarouselProps, IShelfC
         const elements = Array<ReactElement>();
         const maxBooksToDisplay = Math.min(books.length, 6)
         for (let i = 0; i < maxBooksToDisplay; i++) {
-            elements.push(<ShelfBook key={i} id={i} title={books[i].title} img={books[i].img} />)
+            elements.push(
+            <ShelfBook 
+                key={i} 
+                id={i} 
+                title={books[i].title} 
+                author={books[i].author.fullName}
+                rating={books[i].rating}
+                genre={books[i].bookGenre}
+                numPages={books[i].numberOfPages}
+                img={books[i].img} />)
             // console.log(books);
         }
         return elements;

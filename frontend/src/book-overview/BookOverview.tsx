@@ -25,14 +25,19 @@ interface Props {
 }
 
 
-
-
-const BookOverview: React.FC = () => {
+function BookOverview(): JSX.Element  {
   
   const location = useLocation();
+  const state = location.state as { 
+    title: string;
+    author: string;
+    rating: number;
+    img: string;
+    id: number;
+    genre: string[];
+    numPages: number; }
   console.log(location);
-  console.log(location.state);
-  console.log(location.state.title);
+
   
   const [book, setBook] = useState<Book>({
     id: 0,
@@ -50,10 +55,22 @@ const BookOverview: React.FC = () => {
   };
 
   useEffect(() => {
-    const bookInfo = location.state as Book | undefined;
+    if (location.state) {
+      setBook({
+        ...book,
+        title: state.title,
+        author: {
+          fullName: state.author
+        },
+        bookGenre: [state.genre[0]],
+        numberOfPages: state.numPages,
+        rating: state.rating
+  
+      });
+    }
     
     //console.log(location.state);
-  },[location]);
+  },[location.state]);
 
   return (
     <div className="layoutContainer">
@@ -130,6 +147,6 @@ const BookOverview: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default BookOverview;
