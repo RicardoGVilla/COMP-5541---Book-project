@@ -57,4 +57,10 @@ public class PredefinedShelfController {
   public List<Book> getAllDidNotFinishBooks() {
     return bookService.findAllBooksByPredefinedShelfName(ShelfName.DID_NOT_FINISH);
   }
+  
+  @GetMapping(path = "/genre")
+  // TODO: only retrieve books that belong to the logged in user
+  public List<Book> getAllGenreBooks() {
+    return bookService.findAllBooksByPredefinedShelfName(ShelfName.DID_NOT_FINISH);
+  }
 }

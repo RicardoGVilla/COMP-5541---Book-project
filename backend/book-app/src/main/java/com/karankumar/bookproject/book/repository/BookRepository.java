@@ -1,20 +1,3 @@
-/*
-* The book project lets a user keep track of different books they would like to read, are currently
-* reading, have read or did not finish.
-* Copyright (C) 2020  Karan Kumar
-
-* This program is free software: you can redistribute it and/or modify it under the terms of the
-* GNU General Public License as published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-
-* This program is distributed in the hope that it will be useful, but WITHOUT ANY
-* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-* PURPOSE.  See the GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License along with this program.
-* If not, see <https://www.gnu.org/licenses/>.
-*/
-
 package com.karankumar.bookproject.book.repository;
 
 import com.karankumar.bookproject.account.model.User;
@@ -29,12 +12,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Entity;
+
 public interface BookRepository extends JpaRepository<Book, Long> {
   @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
   @Query(
       "SELECT b "
           + "FROM Book b "
           + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.bookCover "
           + "INNER JOIN FETCH b.predefinedShelf "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers")
@@ -48,6 +34,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
       "SELECT b "
           + "FROM Book b "
           + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.bookCover "
           + "INNER JOIN FETCH b.predefinedShelf "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers "
@@ -69,11 +56,25 @@ public interface BookRepository extends JpaRepository<Book, Long> {
           + "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%'))")
   List<Book> findByTitleOrAuthor(@Param("titleOrAuthor") String titleOrAuthor);
 
+  //New method
+  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @Query(
+    "SELECT b "
+          + "FROM Book b "
+          + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.bookCover "
+          + "INNER JOIN FETCH b.predefinedShelf s "
+          + "INNER JOIN FETCH b.tags "
+          + "INNER JOIN FETCH b.publishers "
+          + "WHERE b.bookCover IS NOT NULL")
+  List<Book>findAllBooksWithCover();
+
   @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
   @Query(
       "SELECT b "
           + "FROM Book b "
           + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.bookCover "
           + "INNER JOIN FETCH b.predefinedShelf s "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers "
@@ -88,6 +89,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
           + "INNER JOIN FETCH b.author "
           + "INNER JOIN FETCH b.predefinedShelf pds "
           + "LEFT JOIN FETCH b.bookGenre "
+          + "LEFT JOIN FETCH b.bookCover "
           + "LEFT JOIN FETCH b.publishers "
           + "LEFT JOIN FETCH b.tags "
           + "LEFT JOIN FETCH b.userCreatedShelf ucs "

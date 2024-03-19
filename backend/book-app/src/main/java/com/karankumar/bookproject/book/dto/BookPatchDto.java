@@ -26,6 +26,9 @@ import lombok.Data;
 @Data
 @ExcludeFromJacocoGeneratedReport
 public class BookPatchDto {
+  @JsonProperty("id")
+  private Long id;
+  
   @JsonProperty("title")
   private String title;
 
@@ -49,6 +52,9 @@ public class BookPatchDto {
 
   @JsonProperty("bookRecommendedBy")
   private String bookRecommendedBy;
+  
+  @JsonProperty("bookCover")
+  private String bookCover;
 
   @JsonProperty("isbn")
   private String isbn;

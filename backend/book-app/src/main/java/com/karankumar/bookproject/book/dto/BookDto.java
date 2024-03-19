@@ -57,6 +57,9 @@ public class BookDto {
 
   @JsonProperty("bookRecommendedBy")
   private String bookRecommendedBy;
+  
+  @JsonProperty("bookCover")
+  private String bookCover;
 
   @JsonProperty("isbn")
   private String isbn;
