@@ -106,7 +106,7 @@ export default class BookList extends Component <BookListProps, BookListProps> {
   sortBy = (propertyName: string): void => {
     const pendingChange = [...this.sortingConfigs];
     const sortingIndex = this.sortingConfigs
-        .findIndex(configuraggit tion => configuration.propertyName === propertyName);
+        .findIndex(configuration => configuration.propertyName === propertyName);
     if (sortingIndex !== -1) {
       const configuration: SortingConfig = this.sortingConfigs[sortingIndex];
       if (configuration.ascendingOrder) {
