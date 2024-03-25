@@ -133,7 +133,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             this.setState(state => ({
                 readingBooks: Array.isArray(readingBooks) ? readingBooks : state.readingBooks
             }));
-        }).catch((error: Record<string, string>) => {
+        }).catch((error: Record<string, string>) => {   
             console.error('error: ', error);
         });
     }
@@ -241,7 +241,11 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                             <BookList 
                                 key={this.state.bookList.length + this.state.searchVal}
                                 bookListData={this.state.bookList}
-                                searchText={this.state.searchVal} />
+                                searchText={this.state.searchVal}
+                                readBooks={this.state.readBooks}
+                                readingBooks = {this.state.readingBooks}
+                                bookList = {this.state.bookList}
+                                />
                         ) :
                             <ShelfView
                                 key={[
