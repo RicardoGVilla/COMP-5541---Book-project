@@ -1,20 +1,3 @@
-/*
-   The book project lets a user keep track of different books they would like to read, are currently
-   reading, have read or did not finish.
-   Copyright (C) 2020  Karan Kumar
-
-   This program is free software: you can redistribute it and/or modify it under the terms of the
-   GNU General Public License as published by the Free Software Foundation, either version 3 of the
-   License, or (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-   PURPOSE.  See the GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along with this program.
-   If not, see <https://www.gnu.org/licenses/>.
-*/
-
 package com.karankumar.bookproject.util;
 
 import com.karankumar.bookproject.book.model.Author;
@@ -38,7 +21,10 @@ import java.util.stream.Stream;
 public final class TestData {
   private static final ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
   private static final List<String> recommenders =
-      Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
+    Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
+  
+  private static final List<String> covers =
+    Arrays.asList("https://m.media-amazon.com/images/I/91-LL7OnDCL._AC_UF1000,1000_QL80_.jpg", "https://m.media-amazon.com/images/I/81HY6O8ZjJL._AC_UF1000,1000_QL80_.jpg", "Christina", "Luke", "Sally");
 
   private TestData() {}
 
@@ -68,7 +54,7 @@ public final class TestData {
       List<Tag> tags,
       List<PredefinedShelf> predefinedShelves,
       List<Publisher> publishers) {
-    return Stream.of(
+        return Stream.of(
             "Harry Potter and the Philosopher's stone",
             "Stardust",
             "Harry Potter and the Chamber of Secrets",
@@ -82,7 +68,7 @@ public final class TestData {
             "Harry Potter and the Deathly Hallows")
         .map(title -> createBook(authors, title, tags, predefinedShelves, publishers))
         .collect(Collectors.toList());
-  }
+      }
 
   public static List<Publisher> generatePublishers() {
     return Stream.of("Bloomsbury Publishing", "Scholastic Corporation")
@@ -111,6 +97,7 @@ public final class TestData {
 
     book.setBookGenre(generateRandomGenre());
     book.setBookRecommendedBy(generateRandomRecommender());
+    book.setBookCover(generateRandomCover());
     book.addTag(generateRandomTag(tags));
     book.setSeriesPosition(generateRandomSeriesPosition());
     book.setBookReview("Must Read Book. Really Enjoyed it");
@@ -139,6 +126,10 @@ public final class TestData {
 
   private static String generateRandomRecommender() {
     return recommenders.get(threadLocalRandom.nextInt(recommenders.size()));
+  }
+ 
+  private static String generateRandomCover() {
+    return covers.get(threadLocalRandom.nextInt(recommenders.size()));
   }
 
   private static Tag generateRandomTag(List<Tag> tags) {

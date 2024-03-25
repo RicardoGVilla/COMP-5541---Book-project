@@ -93,15 +93,6 @@
   width: 100%;
   height: 100%;
 }
-
-.add-book-shelf{
-  width: 100%;
-  height: 100%;
-  background: var(--white);
-  border: none;
-  border-radius: 0;
-}
-
 .book.image {
   background-size: cover;
 }

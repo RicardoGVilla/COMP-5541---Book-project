@@ -72,6 +72,7 @@ public class PredefinedShelf extends Shelf {
     READING("Reading"),
     READ("Read"),
     DID_NOT_FINISH("Did not finish");
+    //GENRE("Genre");
 
     private final String name;
 

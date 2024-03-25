@@ -1,20 +1,3 @@
-/*
-The book project lets a user keep track of different books they would like to read, are currently
-reading, have read or did not finish.
-Copyright (C) 2020  Karan Kumar
-
-This program is free software: you can redistribute it and/or modify it under the terms of the
-GNU General Public License as published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this program.
-If not, see <https://www.gnu.org/licenses/>.
-*/
-
 import React, { Component, ReactElement } from "react";
 import { NavBar } from "../shared/navigation/NavBar";
 import Switch from "../settings/Switch";
@@ -27,17 +10,25 @@ import HttpClient from '../shared/http/HttpClient';
 import Endpoints from '../shared/api/endpoints';
 import "./MyBooks.css";
 import ShelfView from "../shared/book-display/ShelfView";
+import BookModal from "../genre/BookModal";
 
 
 interface IState {
     showShelfModal: boolean;
+    showBookModal: boolean;
     showListView: boolean;
     bookList: Book[];
     readBooks: Book[];
     didNotFinishBooks: Book[];
     toReadBooks: Book[];
     readingBooks: Book[];
+    favoriteBooks: Book[];
+    recommendedBooks: Book[];
     searchVal: string;
+    shelves: string[];
+    shelf: {
+        name: string;
+    };
 }
 
 
@@ -46,22 +37,34 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         super(props);
         this.state = {
             showShelfModal: false,
+            showBookModal: false,
             showListView: false,
             bookList: [],
             readBooks: [],
             didNotFinishBooks: [],
             toReadBooks: [],
             readingBooks: [],
-            searchVal: ''
+            favoriteBooks: [],
+            recommendedBooks: [],
+            searchVal: '',
+            shelves:[],
+            shelf: { name: ''}
+            // setShelves: this.setShelves
         };
         this.onAddShelf = this.onAddShelf.bind(this);
+        this.onAddBook = this.onAddBook.bind(this);
         this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this);
+        this.onAddBookModalClose = this.onAddBookModalClose.bind(this);
         this.onToggleListView = this.onToggleListView.bind(this);
         this.getBooks = this.getBooks.bind(this);
         this.getDidNotFinishBooks = this.getDidNotFinishBooks.bind(this);
         this.toReadBooks = this.toReadBooks.bind(this);
         this.readingBooks = this.readingBooks.bind(this);
         this.getReadBooks = this.getReadBooks.bind(this);
+        this.getFavoriteBooks = this.getFavoriteBooks.bind(this);
+        this.getRecommendedBooks = this.getRecommendedBooks.bind(this);
+        this.setShelves = this.setShelves.bind(this);
+        this.setShelf = this.setShelf.bind(this);
     }
 
     componentDidMount(): void {
@@ -70,8 +73,29 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         this.getDidNotFinishBooks();
         this.toReadBooks();
         this.readingBooks();
+        this.getFavoriteBooks();
+        this.getRecommendedBooks();
         this.trackCurrentDeviceSize();
     }
+
+    setShelves(newShelf: string[]) {
+        this.setState({
+            shelves: newShelf,
+        });
+    }
+    // setShelf(editShelf: {}) {
+    //     this.setState({
+    //         shelf: editShelf,
+    //     });
+    // }
+    setShelf = (newShelf: string): void => {
+        this.setState({
+          shelf: {
+            name: newShelf
+          },
+          
+        });
+    };
 
     getReadBooks(): void {
         HttpClient.get(Endpoints.read).then((readBooks: Book[]) => {
@@ -114,11 +138,32 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         });
     }
 
+    getFavoriteBooks(): void {
+        HttpClient.get(Endpoints.reading).then((favoriteBooks: Book[]) => {
+            this.setState(state => ({
+                favoriteBooks: Array.isArray(favoriteBooks) ? favoriteBooks : state.favoriteBooks
+            }));
+        }).catch((error: Record<string, string>) => {
+            console.error('error: ', error);
+        });
+    }
+
+    getRecommendedBooks(): void {
+        HttpClient.get(Endpoints.reading).then((recommendedBooks: Book[]) => {
+            this.setState(state => ({
+                recommendedBooks: Array.isArray(recommendedBooks) ? recommendedBooks : state.recommendedBooks
+            }));
+        }).catch((error: Record<string, string>) => {
+            console.error('error: ', error);
+        });
+    }
+
     getBooks(): void {
         HttpClient.get(Endpoints.books).then((response: Book[]) => {
             this.setState({
                 bookList: response
             });
+            console.log(this.state.bookList)
         })
             .catch((error: Record<string, string>) => {
                 console.error('error: ', error);
@@ -128,6 +173,12 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
     onAddShelf(): void {
         this.setState({
             showShelfModal: true,
+        });
+    }
+    
+    onAddBook(): void {
+        this.setState({
+            showBookModal: true,
         });
     }
 
@@ -147,6 +198,12 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             showShelfModal: false,
         });
     }
+    
+    onAddBookModalClose(): void {
+        this.setState({
+            showBookModal: false,
+        });
+    }
 
     onToggleListView(): void {
         this.setState({
@@ -154,17 +211,20 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         });
     }
 
+    
+
     render(): ReactElement {
         return (
             <Layout title="My books" btn={<div className="my-book-top-buttons">
                 <Button
+                    onClick={this.onAddBook}
                     variant="contained"
                     className="tempButton"
                     color="primary"
                     disableElevation
                 >
                     Add Book
-            </Button>
+                </Button>
                 <Button
                     onClick={this.onAddShelf}
                     variant="contained"
@@ -172,8 +232,8 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                     disableElevation
                 >
                     Add Shelf
-            </Button>
-            </div>}>
+                </Button>
+                </div>}>
                 <NavBar />
                 <div>
                     {
@@ -188,19 +248,35 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                                     ...this.state.readBooks,
                                     ...this.state.readingBooks,
                                     ...this.state.toReadBooks,
-                                    ...this.state.didNotFinishBooks
+                                    ...this.state.didNotFinishBooks,
+                                    ...this.state.favoriteBooks,
+                                    ...this.state.recommendedBooks,
+                                    ...this.state.shelves
                                 ].length + this.state.searchVal}
                                 readBooks={this.state.readBooks} 
                                 toReadBooks={this.state.toReadBooks}
                                 didNotFinishBooks={this.state.didNotFinishBooks}
                                 readingBooks={this.state.readingBooks} 
-                                searchText={this.state.searchVal} />
+                                favoriteBooks={this.state.favoriteBooks} 
+                                recommendedBooks={this.state.recommendedBooks} 
+                                searchText={this.state.searchVal} 
+                                shelves={this.state.shelves}
+                                setShelf={this.setShelf}
+                            />
                     }
                 </div>
                 <ShelfModal
                     open={this.state.showShelfModal}
                     onClose={this.onAddShelfModalClose}
+                    shelves={this.state.shelves}
+                    setShelves={this.setShelves}
+                    shelf={this.state.shelf}
                 />
+                <BookModal
+                    open={this.state.showBookModal}
+                    onClose={this.onAddBookModalClose}
+                />
+
                 <div className="my-book-switch-container">
                     <div className="toggle-text">
                         Shelf View

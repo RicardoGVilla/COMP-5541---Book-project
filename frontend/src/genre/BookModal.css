@@ -1,3 +1,20 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2021  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
 .shelf-modal-container {
     display: flex;
     flex-direction: column;
@@ -9,12 +26,6 @@
         sans-serif;
 }
 
-.shelf-modal-content {
-    border: 1px solid rgba(0, 0, 0, .2);
-    margin-bottom: 20px;
-
-}
-
 .modal-title {
     color: black;
     font-size: 22pt;
@@ -22,19 +33,19 @@
     font-weight: bold;
 }
 
-.shelf-modal-desc-container {
+.book-modal-desc-container {
     font-size: 16pt;
     padding-top: 40px;
-    padding-bottom: 20px;
+    padding-bottom: 60px;
 }
 
-.shelf-modal-desc-items {
+.book-modal-desc-items {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.shelf-modal-desc-items > p {
+.book-modal-desc-items > p {
     width: 30%;
     margin-right: 15px;
     white-space:nowrap
@@ -46,19 +57,30 @@
     border-radius: 20px;
 }
 
+.modal-content {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
 .shelf-button-container {
     display: flex;
     justify-content: space-between;
 }
-
 .shelf-modal-button {
-    width: 100px;
+    width: auto;
 }
 
-.shelf-modal-button-delete {
+.book-modal-button-delete {
     width: 50%;
     display: flex;
-    margin-top: 20px;
+    margin: 0 auto;    
+}
+
+.book-modal-textfield {
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 250px;
 }
 
 @media screen and (max-width: 600px) {

@@ -26,6 +26,7 @@ import PasswordStrengthMeter from '../shared/form/PasswordStrengthMeter';
 import Verb from '../shared/http/verb';
 import logo from '../shared/media/logo/logo_one_line@1x.png';
 import './Register.css';
+import TextField from '@material-ui/core/TextField';
 
 enum PassStrengthEnum {
     WEAK,
@@ -186,7 +187,29 @@ class Register extends Component<Record<string, unknown>, IState> {
                     <br />                
                     <br />
 
-                    <div className="center">
+                    <div className="center">                        
+                        <div className="rounded">
+                            <TextField
+                                className="center login"
+                                id="standard-basic"
+                                label="Name"
+                                variant="outlined"
+                                required
+                                autoFocus
+                            />
+                        </div>
+                        <br />
+                        <div className="rounded">
+                            <TextField
+                                className="center login"
+                                id="standard-basic"
+                                label="Last Name"
+                                variant="outlined"
+                                required
+                                autoFocus
+                            />
+                        </div>
+                        <br />
                         <EmailAddress
                             class="center login"
                             classHelper="center helper"
