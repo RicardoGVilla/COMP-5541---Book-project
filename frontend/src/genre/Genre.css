@@ -15,15 +15,25 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-export default class Endpoints {
-  static readonly login: string = "login";
-  static readonly user: string = "api/user";
-  static readonly books: string = "api/books";
-  static readonly shelf: string = "/api/shelf";
-  static readonly didNotFinish: string = "/api/shelf/books/did-not-finish";
-  static readonly read: string = "/api/shelf/books/read";
-  static readonly reading: string = "/api/shelf/books/reading";
-  static readonly toRead: string = "/api/shelf/books/to-read";
-  static readonly genre: string = "/api/shelf/books/genre";
+.genre-top-buttons {
+  width: 200px;
+  display: flex;
+  justify-content: end;
 }
 
+.my-book-switch-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 20px 0;
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 45%);
+  position: sticky;
+  bottom: 0;
+}
+
+.my-book-toggle-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

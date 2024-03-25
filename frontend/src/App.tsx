@@ -25,6 +25,7 @@ import {
 } from "react-router-dom";
 import Register from "./register/Register";
 import MyBooks from "./my-books/MyBooks";
+import Genre from "./genre/Genre";
 import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
@@ -43,7 +44,8 @@ import {
     SETTINGS, 
     DELETE_ACCOUNT, 
     STATS,
-    SEARCH
+    SEARCH,
+    GENRE
 } from "./shared/routes"
 import {
     ApolloProvider,
@@ -67,6 +69,7 @@ function App(): JSX.Element {
               <Route path={MY_BOOKS} component={MyBooks} />
               <Route path={GOAL} component={Goal} />
               <Route path={SEARCH} component={Search} />
+              <Route path={GENRE} component={Genre} />
               <Route 
                 path={SETTINGS} 
                 render={() => 
