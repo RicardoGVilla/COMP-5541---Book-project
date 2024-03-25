@@ -18,6 +18,8 @@ interface IState {
     showListView: boolean;
     bookList: Book[];
     searchVal: string;
+    readBooks: Book[];
+    readingBooks: Book[];
 }
 
 
@@ -29,6 +31,8 @@ class Genre extends Component<Record<string, unknown>, IState> {
             showBookModal: false,
             showListView: false,
             bookList: [],
+            readBooks: [],
+            readingBooks: [],
             searchVal: ''
         };
         this.onAddShelf = this.onAddShelf.bind(this);
@@ -118,7 +122,10 @@ class Genre extends Component<Record<string, unknown>, IState> {
                             <BookList 
                                 key={this.state.bookList.length + this.state.searchVal}
                                 bookListData={this.state.bookList}
-                                searchText={this.state.searchVal} />
+                                searchText={this.state.searchVal} 
+                                readBooks={this.state.readBooks}
+                                readingBooks = {this.state.readingBooks}
+                                bookList = {this.state.bookList}/>
                         ) :
                             <ShelfViewGenre
                                 key={[
