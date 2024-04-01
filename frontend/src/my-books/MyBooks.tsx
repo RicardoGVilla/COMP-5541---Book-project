@@ -296,121 +296,19 @@
 // }
 // export default MyBooks;
 
+
 import React, { Component, ReactElement } from "react";
 import { NavBar } from "../shared/navigation/NavBar";
 import Switch from "../settings/Switch";
 import Button from "@material-ui/core/Button";
 import ShelfModal from "./ShelfModal";
 import { Layout } from "../shared/components/Layout";
-import BookList from '../shared/book-display/BookList';
-import { Book } from '../shared/types/Book';
+import BookList from "../shared/book-display/BookList";
+import { Book } from "../shared/types/Book";
 import "./MyBooks.css";
 import ShelfView from "../shared/book-display/ShelfView";
 import BookModal from "../genre/BookModal";
-
-// Hardcoded books example
-const hardcodedBooks: Book[] = [
-    {
-        id: 1,
-        title: "The Great Gatsby",
-        img: "https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg",
-        author: { fullName: "F. Scott Fitzgerald" },
-        predefinedShelf: { shelfName: "readingBooks" },
-        bookGenre: ["Fiction"],
-        numberOfPages: 200,
-        rating: 4.5,
-      },
-      {
-        id: 2,
-        title: "To Kill a Mockingbird",
-        img: "path/to/image.jpg",
-        author: { fullName: "Harper Lee" },
-        predefinedShelf: { shelfName: "toReadBooks" },
-        bookGenre: ["Fiction", "Classics"],
-        numberOfPages: 281,
-        rating: 4.7,
-      },
-      {
-        id: 3,
-        title: "1984",
-        img: "path/to/image.jpg",
-        author: { fullName: "George Orwell" },
-        predefinedShelf: { shelfName: "readingBooks" },
-        bookGenre: ["Fiction", "Science Fiction", "Dystopian"],
-        numberOfPages: 328,
-        rating: 4.6,
-      },
-      {
-        id: 4,
-        title: "Pride and Prejudice",
-        img: "path/to/image.jpg",
-        author: { fullName: "Jane Austen" },
-        predefinedShelf: { shelfName: "readingBooks" },
-        bookGenre: ["Fiction", "Classics", "Romance"],
-        numberOfPages: 279,
-        rating: 4.4,
-      },
-      {
-        id: 5,
-        title: "The Catcher in the Rye",
-        img: "path/to/image.jpg",
-        author: { fullName: "J.D. Salinger" },
-        predefinedShelf: { shelfName: "toReadBooks" },
-        bookGenre: ["Fiction", "Classics"],
-        numberOfPages: 277,
-        rating: 4.3,
-      },
-      {
-        id: 6,
-        title: "The Hobbit",
-        img: "path/to/image.jpg",
-        author: { fullName: "J.R.R. Tolkien" },
-        predefinedShelf: { shelfName: "toReadBooks" },
-        bookGenre: ["Fiction", "Fantasy"],
-        numberOfPages: 310,
-        rating: 4.5,
-      },
-      {
-        id: 7,
-        title: "Harry Potter and the Sorcerer's Stone",
-        img: "path/to/image.jpg",
-        author: { fullName: "J.K. Rowling" },
-        predefinedShelf: { shelfName: "toReadBooks" },
-        bookGenre: ["Fiction", "Fantasy"],
-        numberOfPages: 320,
-        rating: 4.8,
-      },
-      {
-        id: 8,
-        title: "The Lord of the Rings",
-        img: "path/to/image.jpg",
-        author: { fullName: "J.R.R. Tolkien" },
-        predefinedShelf: { shelfName: "toReadBooks" },
-        bookGenre: ["Fiction", "Fantasy"],
-        numberOfPages: 1178,
-        rating: 4.9,
-      },
-      {
-        id: 9,
-        title: "Moby-Dick",
-        img: "path/to/image.jpg",
-        author: { fullName: "Herman Melville" },
-        predefinedShelf: { shelfName: "toReadBooks" },
-        bookGenre: ["Fiction", "Classics"],
-        numberOfPages: 585,
-        rating: 4.2,
-      },
-      {
-        id: 10,
-        title: "The Picture of Dorian Gray",
-        img: "path/to/image.jpg",
-        author: { fullName: "Oscar Wilde" },
-        predefinedShelf: { shelfName: "recommendedBooks" },
-        bookGenre: ["Fiction", "Classics"],
-        numberOfPages: 251,
-        rating: 4.6,
-      },
-];
+import BookAPI from "./BookAPI";
 
 interface IState {
     showShelfModal: boolean;
@@ -428,24 +326,42 @@ interface IState {
     shelf: { name: string; };
 }
 
-class MyBooks extends Component<Record<string, never>, IState> {
-    constructor(props: Record<string, never>) {
+class MyBooks extends Component<Record<string, unknown>, IState> {
+    constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
             showShelfModal: false,
             showBookModal: false,
             showListView: false,
-            bookList: hardcodedBooks,
-            readBooks: hardcodedBooks.filter(book => book.predefinedShelf.shelfName === "readBooks"),
-            didNotFinishBooks: hardcodedBooks.filter(book => book.predefinedShelf.shelfName === "didNotFinishBooks"),
-            toReadBooks: hardcodedBooks.filter(book => book.predefinedShelf.shelfName === "toReadBooks"),
-            readingBooks: hardcodedBooks.filter(book => book.predefinedShelf.shelfName === "readingBooks"),
-            favoriteBooks: hardcodedBooks.filter(book => book.predefinedShelf.shelfName === "favoriteBooks"),
-            recommendedBooks: hardcodedBooks.filter(book => book.predefinedShelf.shelfName === "recommendedBooks"),
+            bookList: [],
+            readBooks: [],
+            didNotFinishBooks: [],
+            toReadBooks: [],
+            readingBooks: [],
+            favoriteBooks: [],
+            recommendedBooks: [],
             searchVal: '',
             shelves: [],
             shelf: { name: '' }
         };
+    }
+
+    componentDidMount() {
+        this.fetchAllBooks();
+    }
+
+    fetchAllBooks = () => {
+        BookAPI.fetchBooks().then(books => {
+            this.setState({
+                bookList: books,
+                readBooks: books.filter(book => book.predefinedShelf.shelfName === "readBooks"),
+                didNotFinishBooks: books.filter(book => book.predefinedShelf.shelfName === "didNotFinishBooks"),
+                toReadBooks: books.filter(book => book.predefinedShelf.shelfName === "toReadBooks"),
+                readingBooks: books.filter(book => book.predefinedShelf.shelfName === "readingBooks"),
+                favoriteBooks: books.filter(book => book.predefinedShelf.shelfName === "favoriteBooks"),
+                recommendedBooks: books.filter(book => book.predefinedShelf.shelfName === "recommendedBooks"),
+            });
+        }).catch(error => console.error("Fetching books failed:", error));
     }
 
     onAddBook = () => {
@@ -475,7 +391,6 @@ class MyBooks extends Component<Record<string, never>, IState> {
     setShelves = (newShelves: string[]) => {
         this.setState({ shelves: newShelves });
     };
-    
 
     render(): ReactElement {
         return (
@@ -486,17 +401,14 @@ class MyBooks extends Component<Record<string, never>, IState> {
                 <NavBar />
                 <div>
                     {this.state.showListView ? (
-                       <BookList
-                       key={this.state.bookList.length + this.state.searchVal}
-                       bookListData={this.state.bookList} 
-                       bookList={this.state.bookList} 
-                       searchText={this.state.searchVal}
-                       readBooks={this.state.readBooks}
-                       readingBooks={this.state.readingBooks}
-                     />
-                     
-                   
-                    
+                        <BookList
+                            key={this.state.bookList.length + this.state.searchVal}
+                            bookListData={this.state.bookList} 
+                            bookList={this.state.bookList}
+                            searchText={this.state.searchVal}
+                            readBooks={this.state.readBooks}
+                            readingBooks={this.state.readingBooks}
+                        />
                     ) : (
                         <ShelfView
                             key={[...this.state.readBooks, ...this.state.readingBooks, ...this.state.toReadBooks, ...this.state.didNotFinishBooks, ...this.state.favoriteBooks, ...this.state.recommendedBooks, ...this.state.shelves].length + this.state.searchVal}

@@ -149,4 +149,3 @@ export default class ShelfCarousel extends Component<ShelfCarouselProps, IShelfC
     
 }
 
-

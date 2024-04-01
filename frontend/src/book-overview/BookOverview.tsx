@@ -28,7 +28,7 @@ function BookOverview(): JSX.Element  {
   const [book, setBook] = useState<Book>({
     id: 0,
     title: "",
-    img: state.img, // Set the image URL from the location state
+    img: state.img, 
     predefinedShelf: { shelfName: "" },
     author: { fullName: "" },
     bookGenre: [],
