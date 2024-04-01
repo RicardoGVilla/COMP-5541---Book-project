@@ -313,7 +313,7 @@ const hardcodedBooks: Book[] = [
     {
         id: 1,
         title: "The Great Gatsby",
-        img: "path/to/image.jpg",
+        img: "https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg",
         author: { fullName: "F. Scott Fitzgerald" },
         predefinedShelf: { shelfName: "readingBooks" },
         bookGenre: ["Fiction"],
@@ -405,7 +405,7 @@ const hardcodedBooks: Book[] = [
         title: "The Picture of Dorian Gray",
         img: "path/to/image.jpg",
         author: { fullName: "Oscar Wilde" },
-        predefinedShelf: { shelfName: "toReadBooks" },
+        predefinedShelf: { shelfName: "recommendedBooks" },
         bookGenre: ["Fiction", "Classics"],
         numberOfPages: 251,
         rating: 4.6,
@@ -488,8 +488,8 @@ class MyBooks extends Component<Record<string, never>, IState> {
                     {this.state.showListView ? (
                        <BookList
                        key={this.state.bookList.length + this.state.searchVal}
-                       bookListData={this.state.bookList} // This matches your current implementation
-                       bookList={this.state.bookList} // This matches your current implementation
+                       bookListData={this.state.bookList} 
+                       bookList={this.state.bookList} 
                        searchText={this.state.searchVal}
                        readBooks={this.state.readBooks}
                        readingBooks={this.state.readingBooks}

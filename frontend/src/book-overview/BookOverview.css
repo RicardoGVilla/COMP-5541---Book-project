@@ -61,3 +61,12 @@ If not, see <https://www.gnu.org/licenses/>.
 .book-details {
   margin-top: 100px !important;
 }
+
+// BookOverview.css
+.heart-white {
+  color: white;
+}
+
+.heart-red {
+  color: red;
+}
