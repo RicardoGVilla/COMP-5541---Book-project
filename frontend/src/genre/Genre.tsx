@@ -6,11 +6,9 @@ import BookModal from "./BookModal";
 import { Layout } from "../shared/components/Layout";
 import BookList from '../shared/book-display/BookList';
 import { Book } from '../shared/types/Book';
-import HttpClient from '../shared/http/HttpClient';
-import Endpoints from '../shared/api/endpoints';
 import "./Genre.css";
 import ShelfViewGenre from "../shared/book-display/ShelfViewGenre";
-
+import BookAPI from '../my-books/BookAPI'; 
 
 interface IState {
     showShelfModal: boolean;
@@ -21,7 +19,6 @@ interface IState {
     readBooks: Book[];
     readingBooks: Book[];
 }
-
 
 class Genre extends Component<Record<string, unknown>, IState> {
     constructor(props: Record<string, unknown>) {
@@ -49,14 +46,14 @@ class Genre extends Component<Record<string, unknown>, IState> {
     }
 
     getBooks(): void {
-        HttpClient.get(Endpoints.books).then((response: Book[]) => {
+        BookAPI.fetchBooks().then((response: Book[]) => {
             this.setState({
                 bookList: response
             });
         })
-            .catch((error: Record<string, string>) => {
-                console.error('error: ', error);
-            });
+        .catch((error: Record<string, unknown>) => {
+            console.error('error: ', error);
+        });
     }
 
     onAddShelf(): void {
@@ -79,7 +76,6 @@ class Genre extends Component<Record<string, unknown>, IState> {
                 this.setState({ showListView: false })
             }
         }
-        return
     }
 
     onAddShelfModalClose(): void {
@@ -112,8 +108,6 @@ class Genre extends Component<Record<string, unknown>, IState> {
                 >
                     Add Book
                 </Button>
-                
-                
             </div>}>
                 <NavBar />
                 <div>
@@ -124,33 +118,27 @@ class Genre extends Component<Record<string, unknown>, IState> {
                                 bookListData={this.state.bookList}
                                 searchText={this.state.searchVal} 
                                 readBooks={this.state.readBooks}
-                                readingBooks = {this.state.readingBooks}
-                                bookList = {this.state.bookList}/>
+                                readingBooks={this.state.readingBooks}
+                                bookList={this.state.bookList}/>
                         ) :
                             <ShelfViewGenre
-                                key={[
-                                    ...this.state.bookList,
-                                ].length + this.state.searchVal}
+                                key={this.state.bookList.length + this.state.searchVal}
                                 bookList={this.state.bookList} 
                                 searchText={this.state.searchVal} />
                     }
                 </div>
-               
                 <BookModal
                     open={this.state.showBookModal}
                     onClose={this.onAddBookModalClose}
                 />
                 <div className="my-book-switch-container">
-                    <div className="toggle-text">
-                        Shelf View
-                    </div>
                     <Switch onClick={this.onToggleListView} />
-                    <div className="toggle-text">
-                        List View
-                    </div>
+                    <div className="toggle-text">Shelf View</div>
+                    <div className="toggle-text">List View</div>
                 </div>
             </Layout>
         );
     }
 }
+
 export default Genre;
