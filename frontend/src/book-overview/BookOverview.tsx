@@ -7,6 +7,7 @@ import "./BookOverview.css";
 import "../shared/components/Layout.css";
 import { Create } from "@material-ui/icons";
 import { useHistory, useLocation } from 'react-router-dom';
+import BookAPI from "../my-books/BookAPI";
 
 interface Params {
   id: string;
@@ -46,12 +47,29 @@ function BookOverview(): JSX.Element  {
   const handleFavoriteClick = () => {
     setIsFavorite(!isFavorite);
     setShowMessage(true);
+    console.log("Book title:", book.title); // Logging the book title
+    // Update predefined shelf to "favoriteBooks" using BookAPI
+    BookAPI.updatePredefinedShelf(book.title, "favoriteBooks")
+      .then(updatedBook => {
+        if (updatedBook) {
+          // If book is successfully updated, update state with the updated book
+          setBook(updatedBook);
+        } else {
+          console.error("Failed to update predefined shelf of the book.");
+        }
+      })
+      .catch(error => {
+        console.error("Error while updating predefined shelf:", error);
+      });
   };
+  
 
   useEffect(() => {
     if (location.state) {
+      console.log(state),
       setBook({
         ...book,
+        id: state.id, 
         title: state.title,
         author: { fullName: state.author },
         bookGenre: [state.genre[0]],
@@ -83,7 +101,8 @@ function BookOverview(): JSX.Element  {
             />
             <h1 className="pageTitle bold">{book.title}</h1>
             <h5 className="authorName">{book.author.fullName}</h5>
-            <p>{book.rating}</p>
+            <p>Book ID: {book.id}</p> {/* Display the book's ID */}
+            <p>Rating: {book.rating}</p>
             <p>
               <span className="shelfName">Edit book</span>
               {book.predefinedShelf.shelfName}{" "}

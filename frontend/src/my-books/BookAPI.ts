@@ -124,6 +124,9 @@ const booksDB: Book[] = [
 ];
 
 class BookAPI {
+
+  
+
   static fetchBooks(): Promise<Book[]> {
     return new Promise((resolve) => {
       setTimeout(() => resolve([...booksDB]), 100); 
@@ -157,6 +160,19 @@ class BookAPI {
       if (index !== -1) {
         const [deletedBook] = booksDB.splice(index, 1);
         setTimeout(() => resolve(deletedBook), 100);
+      } else {
+        setTimeout(() => resolve(null), 100);
+      }
+    });
+  }
+
+  static updatePredefinedShelf(bookTitle: string, newShelfName: string): Promise<Book | null> {
+    return new Promise((resolve) => {
+      const index = booksDB.findIndex(book => book.title === bookTitle);
+      if (index !== -1) {
+        const updatedBook: Book = { ...booksDB[index], predefinedShelf: { shelfName: newShelfName } };
+        booksDB[index] = updatedBook;
+        setTimeout(() => resolve(updatedBook), 100);
       } else {
         setTimeout(() => resolve(null), 100);
       }

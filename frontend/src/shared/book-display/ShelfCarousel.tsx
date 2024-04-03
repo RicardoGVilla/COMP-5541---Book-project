@@ -35,6 +35,7 @@ function ShelfBook(props: BookProps): JSX.Element {
         to:  {
             pathname: `${BOOK_OVERVIEW}/${props.id}`,
             state: { 
+                id: props.id,
                 title: props.title,
                 author: props.author,
                 rating: props.rating,
