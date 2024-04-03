@@ -66,7 +66,6 @@ type ShelfCarouselProps = {
 }
 
 class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
-    searchText = '';
 
     constructor(props: ShelfCarouselProps) {
         super(props);
@@ -85,6 +84,9 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
         } 
     }
 
+    searchText = '';
+
+
     filterBooks(): Book[] {
         return this.state.books.filter(book => 
             book.title.toLowerCase().includes(this.searchText.toLowerCase())
@@ -92,18 +94,19 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
     }
 
     renderShelfBook(books: Book[]): ReactElement[] {
-        return books.slice(0, 6).map((book, i) => (
+        return books.slice(0, 6).map((book) => (
             <ShelfBook 
                 key={book.id} 
                 id={book.id} 
                 title={book.title} 
-                author={book.author.fullName}
+                author={book.author.fullName} 
                 rating={book.rating}
-                genre={book.bookGenre} /
+                genre={book.bookGenre} 
                 numPages={book.numberOfPages}
                 img={book.img} />
         ));
     }
+    
 
     render(): JSX.Element {
         return (
