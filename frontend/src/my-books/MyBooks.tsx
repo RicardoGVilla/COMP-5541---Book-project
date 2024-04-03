@@ -344,6 +344,8 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             shelves: [],
             shelf: { name: '' }
         };
+        this.onAddShelf = this.onAddShelf.bind(this);
+        this.onAddBook = this.onAddBook.bind(this);
     }
 
     componentDidMount() {
@@ -364,13 +366,17 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         }).catch(error => console.error("Fetching books failed:", error));
     }
 
-    onAddBook = () => {
-        console.log("Add Book clicked");
-    };
-    
-    onAddShelf = () => {
-        console.log("Add Shelf clicked");
-    };
+    onAddBook(): void {
+        console.log("add book done");
+        this.setState({
+            showBookModal: true,
+        });
+    }
+    onAddShelf(): void {
+        this.setState({
+            showShelfModal: true,
+        });
+    }
     
     onAddShelfModalClose = () => {
         this.setState({ showShelfModal: false });
