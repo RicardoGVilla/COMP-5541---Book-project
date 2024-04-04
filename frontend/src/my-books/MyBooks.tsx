@@ -429,38 +429,6 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                             setShelf={this.setShelf}
                         />
                     )}
-                    {
-                        this.state.showListView ? (
-                            <BookList 
-                                key={this.state.bookList.length + this.state.searchVal}
-                                bookListData={this.state.bookList}
-                                searchText={this.state.searchVal}
-                                readBooks={this.state.readBooks}
-                                readingBooks = {this.state.readingBooks}
-                                bookList = {this.state.bookList}
-                                />
-                        ) :
-                            <ShelfView
-                                key={[
-                                    ...this.state.readBooks,
-                                    ...this.state.readingBooks,
-                                    ...this.state.toReadBooks,
-                                    ...this.state.didNotFinishBooks,
-                                    ...this.state.favoriteBooks,
-                                    ...this.state.recommendedBooks,
-                                    ...this.state.shelves
-                                ].length + this.state.searchVal}
-                                readBooks={this.state.readBooks} 
-                                toReadBooks={this.state.toReadBooks}
-                                didNotFinishBooks={this.state.didNotFinishBooks}
-                                readingBooks={this.state.readingBooks} 
-                                favoriteBooks={this.state.favoriteBooks} 
-                                recommendedBooks={this.state.recommendedBooks} 
-                                searchText={this.state.searchVal} 
-                                shelves={this.state.shelves}
-                                setShelf={this.setShelf}
-                            />
-                    }
                 </div>
                 <ShelfModal
                     open={this.state.showShelfModal}

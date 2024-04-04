@@ -29,7 +29,7 @@ function BookOverview(): JSX.Element  {
   const [book, setBook] = useState<Book>({
     id: 0,
     title: "",
-    img: state.img, 
+    img: "", 
     predefinedShelf: { shelfName: "" },
     author: { fullName: "" },
     bookGenre: [],
