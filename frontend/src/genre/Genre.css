@@ -14,13 +14,11 @@ PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.
 If not, see <https://www.gnu.org/licenses/>.
 */
-
 .genre-top-buttons {
   width: 200px;
   display: flex;
   justify-content: end;
 }
-
 .my-book-switch-container {
   display: flex;
   flex-direction: row;
