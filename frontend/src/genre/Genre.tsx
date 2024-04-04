@@ -120,12 +120,12 @@ class Genre extends Component<Record<string, unknown>, IState> {
                             readingBooks={this.state.readingBooks}
                             bookList={this.state.bookList}
                         />
-                        ) : (
-                            <ShelfViewGenre
-                                key={this.state.bookList.length + this.state.searchVal}
-                                bookList={this.state.bookList} 
-                                searchText={this.state.searchVal}
-                            />
+                    ) : (
+                        <ShelfViewGenre
+                            key={this.state.bookList.length + this.state.searchVal}
+                            bookList={this.state.bookList} 
+                            searchText={this.state.searchVal}
+                        />
                     )}
                 </div>
                 <BookModal
@@ -133,9 +133,13 @@ class Genre extends Component<Record<string, unknown>, IState> {
                     onClose={this.onAddBookModalClose}
                 />
                 <div className="my-book-switch-container">
+                    <div className="toggle-text">
+                        Shelf View
+                    </div>
                     <Switch onClick={this.onToggleListView} />
-                    <div className="toggle-text">Shelf View</div>
-                    <div className="toggle-text">List View</div>
+                    <div className="toggle-text">
+                        List View
+                    </div>
                 </div>
             </Layout>
         );
