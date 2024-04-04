@@ -4,7 +4,7 @@ import './BookList.css';
 import { BOOK_OVERVIEW } from '../routes'
 import { Link } from 'react-router-dom';
 import {ArrowDropDown, ArrowDropUp} from "@material-ui/icons";
-import MyBooks from '../../my-books/MyBooks';
+// import MyBooks from '../../my-books/MyBooks';
 
 const CHAR_LIMIT = 40;
 
