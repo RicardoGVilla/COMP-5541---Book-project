@@ -18,6 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
   width: 200px;
   display: flex;
   justify-content: end;
+
+  
 }
 .my-book-switch-container {
   display: flex;
