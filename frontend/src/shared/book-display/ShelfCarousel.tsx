@@ -42,11 +42,8 @@ function ShelfBook(props: BookProps): JSX.Element {
     return (
         <Link {...linkProps}> 
             <Paper className={bookClass} variant="elevation" square={false}>
-                {props.img && <img src={props.img} alt={props.title} className="book-image" />}
-                <div className="book-details">
-                    {(bookClass !== "book") && <div className="book-spine"></div>}
-                    {displayTitle}
-                </div>
+                {(bookClass !== "book") && <img src={props.img} alt={props.title} className="book-spine"></img>}
+                {displayTitle}
             </Paper>
         </Link>
     );

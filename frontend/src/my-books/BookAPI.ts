@@ -42,7 +42,7 @@ const booksDB: Book[] = [
   {
     id: 3,
     title: "To Kill a Mockingbird",
-    img: "https://v4m9y9w9.rocketcdn.me/wp-content/uploads/2017/08/THATKAM2.jpg",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/To_Kill_a_Mockingbird_%28first_edition_cover%29.jpg/1200px-To_Kill_a_Mockingbird_%28first_edition_cover%29.jpg",
     author: { fullName: "Harper Lee" },
     predefinedShelf: { shelfName: "favoriteBooks" },
     bookGenre: ["Social Issues"],
@@ -73,7 +73,7 @@ const booksDB: Book[] = [
   {
     id: 6,
     title: "The Catcher in the Rye",
-    img: "https://i.etsystatic.com/20545894/r/il/6ff9d9/1977098755/il_570xN.1977098755_7szr.jpge",
+    img: "https://m.media-amazon.com/images/I/91HPG31dTwL._AC_UF1000,1000_QL80_.jpg",
     author: { fullName: "J.D. Salinger" },
     predefinedShelf: { shelfName: "didNotFinishBooks" },
     bookGenre: ["Classic Literature"],
@@ -103,7 +103,7 @@ const booksDB: Book[] = [
   {
     id: 9,
     title: "The Silence of the Girls",
-    img: "https://images-na.ssl-images-amazon.com/images/I/91TgWRV4hqL._AC_UL600_SR600,600_.jpg",
+    img: "https://m.media-amazon.com/images/I/51qbsgAr2hL._SY445_SX342_.jpg",
     author: { fullName: "Pat Barker" },
     predefinedShelf: { shelfName: "readingBooks" },
     bookGenre: ["Historical Fiction"],
