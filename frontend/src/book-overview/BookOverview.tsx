@@ -118,6 +118,45 @@ function BookOverview(): JSX.Element  {
           </div>
         </div>
         {showMessage && <p className="message">Book added to favorites!</p>}
+        <div className="row book-details justify-content-center">
+            <div className="col-8">
+              <h5 className="bold">Book details</h5>
+              <div className="row">
+                <div className="col-2">
+                  <span className="bold">Summary:</span>
+                </div>
+                <div className="col-10">No summary</div>
+              </div>
+              <div className="row">
+                <div className="col-2">
+                  <span className="bold">Genre(s):</span>
+                </div>
+                <div className="col-10">{book.bookGenre}</div>
+              </div>
+              <div className="row">
+                <div className="col-2">
+                  <span className="bold">Page count:</span>
+                </div>
+                <div className="col-10">
+                  {book.numberOfPages} pages
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-2">
+                  <span className="bold">My review:</span>
+                </div>
+                <div className="col-10">
+                  You have not submitted a review for this book!
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-2"></div>
+                <div className="col-10">
+                  <a className="submit-review">Submit a review</a>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
   );

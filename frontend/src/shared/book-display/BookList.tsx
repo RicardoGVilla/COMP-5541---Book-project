@@ -29,13 +29,13 @@ function getRandomBooks(books: Book[], numberOfBooks: number): Book[] {
   // Check if there are no books and returns an empty array.
   if (books.length === 0) {
     return recommendBooks
-  };
+  }
 
   // Check if the number of books that the function will return is greater than the original book array. 
   // Return the original book array if true.
   if (numberOfBooks >= books.length) {
     return books
-  };
+  }
 
   // Array of indices representing the available books
   const availableIndices = Array.from(Array(books.length).keys());
@@ -61,8 +61,8 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
     return getRandomBooks(Books, 5);
   }
 
-  const bookRead_ing: Book[] = [...readBooks, ...readingBooks]; // list of books that were read or currently reading
-  const NotbookRed_ing = Books.filter((book) => !bookRead_ing.includes(book));  // list of books that were NOT read NOR currently reading
+  const bookReadIng: Book[] = [...readBooks, ...readingBooks]; // list of books that were read or currently reading
+  const NotbookRedIng = Books.filter((book) => !bookReadIng.includes(book));  // list of books that were NOT read NOR currently reading
 
   // Calculate genre counts based on readBooks and readingBooks
   const genreCounts: { [genre: string]: number } = {};
@@ -107,20 +107,20 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
     // Assigns a score of 3 to the book
     if (book.bookGenre.some((genre) => TopGenre.includes(genre)) 
       && TopAuthor.includes(book.author.fullName)
-      && !NotbookRed_ing.includes(book)) {
+      && !NotbookRedIng.includes(book)) {
       booksByScore[3].push(book);
     } 
     
     // Assigns a score of 2 to the book
     else if (TopAuthor.includes(book.author.fullName) 
       && !TopGenre.some((genre) => book.bookGenre.includes(genre))
-      && !NotbookRed_ing.includes(book)) {
+      && !NotbookRedIng.includes(book)) {
       booksByScore[2].push(book);
     } 
     // Assigns a score of 1 to the book
     else if (book.bookGenre.some((genre) => TopGenre.includes(genre))
         && !(TopAuthor.includes(book.author.fullName))
-        && !NotbookRed_ing.includes(book)) {
+        && !NotbookRedIng.includes(book)) {
         booksByScore[1].push(book);
     }
 });
@@ -137,9 +137,9 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
   }
 
   // if recommendedBooks list has less than 5 books, randomely select from the books that were not read.
-  while (recommendedBooks.length < 5 && NotbookRed_ing.length > 0) {
-    const randomIndex = Math.floor(Math.random() * NotbookRed_ing.length);
-    recommendedBooks.push(NotbookRed_ing.splice(randomIndex, 1)[0]);
+  while (recommendedBooks.length < 5 && NotbookRedIng.length > 0) {
+    const randomIndex = Math.floor(Math.random() * NotbookRedIng.length);
+    recommendedBooks.push(NotbookRedIng.splice(randomIndex, 1)[0]);
   }
 
   return recommendedBooks;
