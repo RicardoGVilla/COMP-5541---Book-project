@@ -204,6 +204,7 @@ export default class BookList extends Component <BookListProps, BookListProps> {
 
   render(): JSX.Element {
     const recommendedBooks = recommendBooks(this.state.bookList, this.state.readBooks, this.state.readingBooks);
+
   
     return (
       <div>
@@ -230,9 +231,11 @@ export default class BookList extends Component <BookListProps, BookListProps> {
           {this.sortBooks(this.state.bookListData).map(book => (
             <Link to={BOOK_OVERVIEW + "/" + book.id} style={{ textDecoration: 'none', color: 'black' }} key={book.id}>
               <div className="booklist-book">
-                <div className="booklist-book-thumbnail">
+                <div className="booklist-book-thumbnail book image">
                   {book.title.length > CHAR_LIMIT ?
                     book.title.substring(0, CHAR_LIMIT) + "..." : book.title}
+                   {/* {<img src={book.img} alt={book.title} className="book-spine"></img>}  */}
+                   <img src={book.img} alt={book.title} className="book-spine"></img>
                 </div>
                 <div className="booklist-book-title">{book.title}</div>
                 <div className="booklist-book-author">{book.author.fullName}</div>
