@@ -106,6 +106,8 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
     
 
     render(): JSX.Element {
+        const isRecommendations = this.props.title === "Recommendations";
+        
         return (
             <div className="shelf-container">
                 <span className="shelf-title">{this.state.title}</span>
@@ -114,7 +116,7 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
                 <div className="books-and-shelf">
                     <div className="book-wrap">
                         {this.renderShelfBook(this.state.books)}
-                        <AddBookShelf />
+                        {!isRecommendations && <AddBookShelf />}
                         <div className="clear" />
                     </div>
                     <div className="shelf"></div>
