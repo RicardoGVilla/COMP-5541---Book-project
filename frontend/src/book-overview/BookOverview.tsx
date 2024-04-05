@@ -26,6 +26,10 @@ function BookOverview(): JSX.Element  {
     numPages: number;
   };
 
+  // Load favorite status from local storage on component mount
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+
   const [book, setBook] = useState<Book>({
     id: 0,
     title: "",
@@ -35,24 +39,28 @@ function BookOverview(): JSX.Element  {
     bookGenre: [],
     numberOfPages: 0,
     rating: 0,
+    favorite: false
   });
 
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
+  console.log(book);
+  
 
   const handleClickToGoBack = () => {
     history.goBack();
   };
 
   const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
+    const updatedIsFavorite = !isFavorite;
+    setIsFavorite(updatedIsFavorite);
     setShowMessage(true);
-    console.log("Book title:", book.title); 
+
     // Update favorite status using BookAPI
-    BookAPI.setFavoriteStatus(book.id, !isFavorite)
+    BookAPI.setFavoriteStatus(book.id, updatedIsFavorite)
       .then(updatedBook => {
         if (updatedBook) {
-          setBook({ ...book, favorite: !isFavorite });
+          setBook({ ...book, favorite: updatedIsFavorite });
+          // Save favorite status to local storage
+          localStorage.setItem(`favoriteStatus_${book.id}`, JSON.stringify(updatedIsFavorite));
         } else {
           console.error("Failed to update favorite status of the book.");
         }
@@ -64,8 +72,10 @@ function BookOverview(): JSX.Element  {
   
 
   useEffect(() => {
-    if (location.state) {
-      console.log(state),
+    // Retrieve favorite status from local storage on component mount
+    const storedFavoriteStatus = localStorage.getItem(`favoriteStatus_${state.id}`);
+    if (storedFavoriteStatus !== null) {
+      setIsFavorite(JSON.parse(storedFavoriteStatus));
       setBook({
         ...book,
         id: state.id, 
@@ -74,10 +84,25 @@ function BookOverview(): JSX.Element  {
         bookGenre: [state.genre[0]],
         numberOfPages: state.numPages,
         rating: state.rating,
-        img: state.img 
+        img: state.img,
+        favorite: JSON.parse(storedFavoriteStatus)
+      });
+    } else {
+      // If no favorite status found in local storage, default to false
+      setIsFavorite(false);
+      setBook({
+        ...book,
+        id: state.id, 
+        title: state.title,
+        author: { fullName: state.author },
+        bookGenre: [state.genre[0]],
+        numberOfPages: state.numPages,
+        rating: state.rating,
+        img: state.img,
+        favorite: false
       });
     }
-  }, [location.state]);
+  }, [state]);
 
   return (
     <div className="layoutContainer">
@@ -112,11 +137,11 @@ function BookOverview(): JSX.Element  {
                   onClick={handleFavoriteClick}
                   style={{ cursor: 'pointer' }}
                 />
+                {showMessage && <p className="message">Book added to favorites!</p>}
               </div>
             </p>
           </div>
         </div>
-        {showMessage && <p className="message">Book added to favorites!</p>}
         <div className="row book-details justify-content-center">
             <div className="col-8">
               <h5 className="bold">Book details</h5>

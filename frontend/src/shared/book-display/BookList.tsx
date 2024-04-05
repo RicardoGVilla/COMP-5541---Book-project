@@ -102,12 +102,26 @@ export default class BookList extends Component <BookListProps, BookListProps> {
           </div>
           {/* Main book list */}
           {this.sortBooks(this.state.bookListData).map(book => (
-            <Link to={BOOK_OVERVIEW + "/" + book.id} style={{ textDecoration: 'none', color: 'black' }} key={book.id}>
+            <Link
+            to={{
+              pathname: `${BOOK_OVERVIEW}/${book.id}`,
+              state: {
+                id: book.id,
+                title: book.title,
+                author: book.author.fullName,
+                rating: book.rating,
+                img: book.img,
+                genre: book.bookGenre,
+                numPages: book.numberOfPages,
+              }
+            }}
+            style={{ textDecoration: 'none', color: 'black' }}
+            key={book.id}
+          >
               <div className="booklist-book">
                 <div className="booklist-book-thumbnail book image">
                   {book.title.length > CHAR_LIMIT ?
                     book.title.substring(0, CHAR_LIMIT) + "..." : book.title}
-                   {/* {<img src={book.img} alt={book.title} className="book-spine"></img>}  */}
                    <img src={book.img} alt={book.title} className="book-spine"></img>
                 </div>
                 <div className="booklist-book-title">{book.title}</div>
