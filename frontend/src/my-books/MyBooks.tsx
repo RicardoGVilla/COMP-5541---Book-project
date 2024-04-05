@@ -296,7 +296,6 @@
 // }
 // export default MyBooks;
 
-
 import React, { Component, ReactElement } from "react";
 import { NavBar } from "../shared/navigation/NavBar";
 import Switch from "../settings/Switch";
@@ -360,7 +359,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                 didNotFinishBooks: books.filter(book => book.predefinedShelf.shelfName === "didNotFinishBooks"),
                 toReadBooks: books.filter(book => book.predefinedShelf.shelfName === "toReadBooks"),
                 readingBooks: books.filter(book => book.predefinedShelf.shelfName === "readingBooks"),
-                favoriteBooks: books.filter(book => book.predefinedShelf.shelfName === "favoriteBooks"),
+                favoriteBooks: books.filter(book => book.favorite),// Filter favorite books
                 recommendedBooks: books.filter(book => book.predefinedShelf.shelfName === "recommendedBooks"),
             });
         }).catch(error => console.error("Fetching books failed:", error));

@@ -2,7 +2,6 @@ export type Book = {
   id: number;
   title: string;
   img: string;
-  // Add img property once we have thumbnails
   author: {
     fullName: string;
   };
@@ -12,4 +11,5 @@ export type Book = {
   bookGenre: string[];
   numberOfPages: number;
   rating: number;
+  favorite?: boolean;
 };

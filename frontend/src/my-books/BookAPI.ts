@@ -15,6 +15,7 @@ interface Book {
   bookGenre: string[];
   numberOfPages: number;
   rating: number;
+  favorite: boolean; // New property for favorite status
 }
 
 // Simulated database of books
@@ -28,6 +29,7 @@ const booksDB: Book[] = [
     bookGenre: ["Fiction"],
     numberOfPages: 200,
     rating: 4.5,
+    favorite: false
   },
   {
     id: 2,
@@ -38,6 +40,7 @@ const booksDB: Book[] = [
     bookGenre: ["Fiction"],
     numberOfPages: 328,
     rating: 4.7,
+    favorite: true
   },
   {
     id: 3,
@@ -48,6 +51,7 @@ const booksDB: Book[] = [
     bookGenre: ["Social Issues"],
     numberOfPages: 281,
     rating: 4.8,
+    favorite: false
   },
   {
     id: 4,
@@ -58,6 +62,7 @@ const booksDB: Book[] = [
     bookGenre: ["Fiction", "Romance"],
     numberOfPages: 432,
     rating: 4.6,
+    favorite: false
   },
   {
     id: 5,
@@ -68,8 +73,8 @@ const booksDB: Book[] = [
     bookGenre: ["Fantasy"],
     numberOfPages: 310,
     rating: 4.7,
+    favorite: false
   },
-
   {
     id: 6,
     title: "The Catcher in the Rye",
@@ -79,6 +84,7 @@ const booksDB: Book[] = [
     bookGenre: ["Classic Literature"],
     numberOfPages: 234,
     rating: 4.0,
+    favorite: false
   },
   {
     id: 7,
@@ -89,6 +95,7 @@ const booksDB: Book[] = [
     bookGenre: ["African American Literature"],
     numberOfPages: 275,
     rating: 4.3,
+    favorite: false
   },
   {
     id: 8,
@@ -99,6 +106,7 @@ const booksDB: Book[] = [
     bookGenre: ["Dystopian"],
     numberOfPages: 311,
     rating: 4.2,
+    favorite: false
   },
   {
     id: 9,
@@ -109,43 +117,44 @@ const booksDB: Book[] = [
     bookGenre: ["Historical Fiction"],
     numberOfPages: 336,
     rating: 4.1,
+    favorite: false
   },
   {
     id: 10,
     title: "The Name of the Wind",
     img: "https://m.media-amazon.com/images/I/611iKJa7a-L._AC_UF1000,1000_QL80_.jpg",
-    author: { fullName: "readingBooks" },
+    author: { fullName: "Patrick Rothfuss" },
     predefinedShelf: { shelfName: "fantasy" },
     bookGenre: ["Adventure"],
     numberOfPages: 662,
     rating: 4.5,
+    favorite: false
   }, 
   {
-    id: 13,
+    id: 11,
     title: "The Master and Margarita",
     img: "https://m.media-amazon.com/images/I/61z04S7MaeL._AC_UF1000,1000_QL80_.jpg",
     author: { fullName: "Mikhail Bulgakov" },
     predefinedShelf: { shelfName: "classic" },
     bookGenre: ["Satire"],
     numberOfPages: 384,
-    rating: 4.6
+    rating: 4.6,
+    favorite: false
   },
   {
-    id: 14,
+    id: 12,
     title: "Thus Spoke Zarathustra",
     img: "https://m.media-amazon.com/images/I/613ZVoVVeXL._AC_UF350,350_QL50_.jpg",
     author: { fullName: "Friedrich Nietzsche" },
     predefinedShelf: { shelfName: "philosophy" },
     bookGenre: ["Philosophy"],
     numberOfPages: 352,
-    rating: 4.2
+    rating: 4.2,
+    favorite: false
   }
-  
 ];
 
 class BookAPI {
-
-  
 
   static fetchBooks(): Promise<Book[]> {
     return new Promise((resolve) => {
@@ -186,11 +195,11 @@ class BookAPI {
     });
   }
 
-  static updatePredefinedShelf(bookTitle: string, newShelfName: string): Promise<Book | null> {
+  static setFavoriteStatus(bookId: number, isFavorite: boolean): Promise<Book | null> {
     return new Promise((resolve) => {
-      const index = booksDB.findIndex(book => book.title === bookTitle);
+      const index = booksDB.findIndex(book => book.id === bookId);
       if (index !== -1) {
-        const updatedBook: Book = { ...booksDB[index], predefinedShelf: { shelfName: newShelfName } };
+        const updatedBook: Book = { ...booksDB[index], favorite: isFavorite };
         booksDB[index] = updatedBook;
         setTimeout(() => resolve(updatedBook), 100);
       } else {

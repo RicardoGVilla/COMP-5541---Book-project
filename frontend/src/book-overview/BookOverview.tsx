@@ -47,19 +47,19 @@ function BookOverview(): JSX.Element  {
   const handleFavoriteClick = () => {
     setIsFavorite(!isFavorite);
     setShowMessage(true);
-    console.log("Book title:", book.title); // Logging the book title
-    // Update predefined shelf to "favoriteBooks" using BookAPI
-    BookAPI.updatePredefinedShelf(book.title, "favoriteBooks")
+    console.log("Book title:", book.title); 
+    // Update favorite status using BookAPI
+    BookAPI.setFavoriteStatus(book.id, !isFavorite)
       .then(updatedBook => {
         if (updatedBook) {
           // If book is successfully updated, update state with the updated book
-          setBook(updatedBook);
+          setBook({ ...book, favorite: !isFavorite });
         } else {
-          console.error("Failed to update predefined shelf of the book.");
+          console.error("Failed to update favorite status of the book.");
         }
       })
       .catch(error => {
-        console.error("Error while updating predefined shelf:", error);
+        console.error("Error while updating favorite status:", error);
       });
   };
   
