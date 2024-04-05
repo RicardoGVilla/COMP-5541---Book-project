@@ -359,7 +359,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                 didNotFinishBooks: books.filter(book => book.predefinedShelf.shelfName === "didNotFinishBooks"),
                 toReadBooks: books.filter(book => book.predefinedShelf.shelfName === "toReadBooks"),
                 readingBooks: books.filter(book => book.predefinedShelf.shelfName === "readingBooks"),
-                favoriteBooks: books.filter(book => book.favorite),// Filter favorite books
+                favoriteBooks: books.filter(book => book.favorite),
                 recommendedBooks: books.filter(book => book.predefinedShelf.shelfName === "recommendedBooks"),
             });
         }).catch(error => console.error("Fetching books failed:", error));

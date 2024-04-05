@@ -52,7 +52,6 @@ function BookOverview(): JSX.Element  {
     BookAPI.setFavoriteStatus(book.id, !isFavorite)
       .then(updatedBook => {
         if (updatedBook) {
-          // If book is successfully updated, update state with the updated book
           setBook({ ...book, favorite: !isFavorite });
         } else {
           console.error("Failed to update favorite status of the book.");
