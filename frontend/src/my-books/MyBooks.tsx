@@ -67,7 +67,7 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
     }
   
     const bookReadIng: Book[] = [...readBooks, ...readingBooks]; // list of books that were read or currently reading
-    const NotbookRedIng = Books.filter((book) => !bookReadIng.includes(book));  // list of books that were NOT read NOR currently reading
+    const notbookRedIng = Books.filter((book) => !bookReadIng.includes(book));  // list of books that were NOT read NOR currently reading
   
     // Calculate genre counts based on readBooks and readingBooks
     const genreCounts: { [genre: string]: number } = {};
@@ -96,41 +96,35 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
       });
     const sortedAuthors = Object.keys(authorCounts).sort((a, b) => authorCounts[b] - authorCounts[a]); // sorts Books by Author Count
   
-    const TopGenre = sortedGenres.slice(0, 2); // Gets the top two genre. why 2? It was choosen randomly. 
-    const TopAuthor = sortedAuthors.slice(0, 5); // gets the top 5 genre. Same here; randomely chosen
+    const topGenre = sortedGenres.slice(0, 2); // Gets the top two genre. why 2? It was choosen randomly. 
+    const topAuthor = sortedAuthors.slice(0, 5); // gets the top 5 genre. Same here; randomely chosen
   
     const recommendedBooks: Book[] = []; // the list of recommended books. Only 5 will be picked. 
   
     const booksByScore: { [score: number]: Book[] } = {
-      3: [], // Book is present in both TopAuthor and TopGenre
-      2: [], // Book is present in TopAuthor
-      1: [] // Book is present in TopGenre
+      3: [], // Book is present in both topAuthor and topGenre
+      2: [], // Book is present in topAuthor
+      1: [] // Book is present in topGenre
     };
   
     Books.forEach((book) => {
+        // Assigns a score of 3 to the book
+        if (book.bookGenre.some((genre) => topGenre.includes(genre)) 
+        && topAuthor.includes(book.author.fullName)
+        && !notbookRedIng.includes(book)) {
+            booksByScore[3].push(book);
+        } else if (topAuthor.includes(book.author.fullName) // Assigns a score of 2 to the book
+        && !topGenre.some((genre) => book.bookGenre.includes(genre))
+        && !notbookRedIng.includes(book)) {
+            booksByScore[2].push(book);
+        } else if (book.bookGenre.some((genre) => topGenre.includes(genre)) // Assigns a score of 1 to the book
+            && !(topAuthor.includes(book.author.fullName))
+            && !notbookRedIng.includes(book)) {
+            booksByScore[1].push(book);
+        }
+    });
   
-      // Assigns a score of 3 to the book
-      if (book.bookGenre.some((genre) => TopGenre.includes(genre)) 
-        && TopAuthor.includes(book.author.fullName)
-        && !NotbookRedIng.includes(book)) {
-        booksByScore[3].push(book);
-      } 
-      
-      // Assigns a score of 2 to the book
-      else if (TopAuthor.includes(book.author.fullName) 
-        && !TopGenre.some((genre) => book.bookGenre.includes(genre))
-        && !NotbookRedIng.includes(book)) {
-        booksByScore[2].push(book);
-      } 
-      // Assigns a score of 1 to the book
-      else if (book.bookGenre.some((genre) => TopGenre.includes(genre))
-          && !(TopAuthor.includes(book.author.fullName))
-          && !NotbookRedIng.includes(book)) {
-          booksByScore[1].push(book);
-      }
-  });
-  
-  // this is where we are populating the recommendBooks List.
+    // this is where we are populating the recommendBooks List.
     for (let score = 3; score >= 1; score--) {
       const books = booksByScore[score];
       for (let i = 0; i < books.length; i++) {
@@ -142,9 +136,9 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
     }
   
     // if recommendedBooks list has less than 5 books, randomely select from the books that were not read.
-    while (recommendedBooks.length < 5 && NotbookRedIng.length > 0) {
-      const randomIndex = Math.floor(Math.random() * NotbookRedIng.length);
-      recommendedBooks.push(NotbookRedIng.splice(randomIndex, 1)[0]);
+    while (recommendedBooks.length < 5 && notbookRedIng.length > 0) {
+      const randomIndex = Math.floor(Math.random() * notbookRedIng.length);
+      recommendedBooks.push(notbookRedIng.splice(randomIndex, 1)[0]);
     }
   
     return recommendedBooks;
