@@ -137,7 +137,11 @@ function BookOverview(): JSX.Element  {
                   onClick={handleFavoriteClick}
                   style={{ cursor: 'pointer' }}
                 />
-                {showMessage && <p className="message">Book added to favorites!</p>}
+                {showMessage && (
+                  <p className="message">
+                    {isFavorite ? "Book added to favorites!" : "Book removed from favorites!"}
+                  </p>
+                )}
               </div>
             </p>
           </div>

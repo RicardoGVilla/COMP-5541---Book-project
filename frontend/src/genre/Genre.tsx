@@ -96,6 +96,10 @@ class Genre extends Component<Record<string, unknown>, IState> {
         });
     }
 
+    onReloadRecom = () => {
+        console.log(this.state.bookList);
+    }
+
     render(): ReactElement {
         return (
             <Layout title="Genre" btn={<div className="genre-top-buttons">
@@ -124,6 +128,7 @@ class Genre extends Component<Record<string, unknown>, IState> {
                         <ShelfViewGenre
                             key={this.state.bookList.length + this.state.searchVal}
                             bookList={this.state.bookList} 
+                            onReloadRecom={this.onReloadRecom}
                             searchText={this.state.searchVal}
                         />
                     )}

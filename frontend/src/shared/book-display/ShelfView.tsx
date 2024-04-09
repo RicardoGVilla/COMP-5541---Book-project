@@ -15,6 +15,7 @@ interface IShelfState {
     searchText: string;
     shelves: string[];
     setShelf: (name: string) => void;
+    onReloadRecom: () => void;
 }
 
 export default class ShelfView extends Component<IShelfState, IShelfState> {
@@ -29,8 +30,26 @@ export default class ShelfView extends Component<IShelfState, IShelfState> {
             recommendedBooks: props.recommendedBooks,
             searchText: props.searchText,
             shelves: props.shelves,
-            setShelf: props.setShelf
+            setShelf: props.setShelf,
+            onReloadRecom: props.onReloadRecom
         };
+    }
+
+    componentDidUpdate(prevProps: IShelfState) {
+        // Check if the props have changed
+        if (prevProps !== this.props) {
+            this.setState({
+                didNotFinishBooks: this.props.didNotFinishBooks,
+                readBooks: this.props.readBooks,
+                readingBooks: this.props.readingBooks,
+                toReadBooks: this.props.toReadBooks,
+                favoriteBooks: this.props.favoriteBooks,
+                recommendedBooks: this.props.recommendedBooks,
+                searchText: this.props.searchText,
+                shelves: this.props.shelves,
+                setShelf: this.props.setShelf
+            });
+        }
     }
 
     render(): ReactElement {
@@ -39,22 +58,27 @@ export default class ShelfView extends Component<IShelfState, IShelfState> {
                 <ShelfCarousel 
                     title="Reading"
                     books={this.state.readingBooks}
+                    onReloadRecom={this.state.onReloadRecom}
                     searchText={this.state.searchText} />
                 <ShelfCarousel 
                     title="To Read" 
                     books={this.state.toReadBooks}
+                    onReloadRecom={this.state.onReloadRecom}
                     searchText={this.state.searchText} />
                 <ShelfCarousel 
                     title="Read"
                     books={this.state.readBooks}
+                    onReloadRecom={this.state.onReloadRecom}
                     searchText={this.state.searchText} />
                 <ShelfCarousel 
                     title="Favorites"
                     books={this.state.favoriteBooks}
+                    onReloadRecom={this.state.onReloadRecom}
                     searchText={this.state.searchText} />
                 <ShelfCarousel 
                     title="Recommendations"
                     books={this.state.recommendedBooks}
+                    onReloadRecom={this.state.onReloadRecom}
                     searchText={this.state.searchText} />
 
                 { this.state.shelves.map( (shelfName, index) => (

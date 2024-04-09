@@ -103,7 +103,7 @@ export default class ShelfModal extends Component<IShelfModalProps, MyState > {
                 <Modal open={this.props.open} onClose={this.props.onClose}>
                     <div className="shelf-modal-container">
                         <div className="shelf-modal-content">
-                            <div className="modal-title">{this.state.name ? 'Edit shelf' : 'Add shelf'}</div>
+                            <div className="modal-title">Add shelf</div>
                             <div className="shelf-modal-desc-container">
                                 <Hidden smDown implementation="css">
                                     <div className="shelf-modal-desc-items">
@@ -117,7 +117,7 @@ export default class ShelfModal extends Component<IShelfModalProps, MyState > {
                                             onChange={this.handleChange}
                                         />
                                     </div>
-                                    {this.state.name ? (
+                                    {/* {this.state.name ? (
                                         <div className="shelf-modal-button-delete">
                                             <Button
                                                 className="shelf-modal-button"
@@ -129,7 +129,7 @@ export default class ShelfModal extends Component<IShelfModalProps, MyState > {
                                                 Delete Shelf
                                             </Button>
                                         </div> 
-                                    ) : (<div></div>)}
+                                    ) : (<div></div>)} */}
                                     
                                 </Hidden>
                                 <Hidden mdUp implementation="css">
@@ -164,7 +164,8 @@ export default class ShelfModal extends Component<IShelfModalProps, MyState > {
                                 color="primary"
                                 disableElevation
                             >
-                                {this.state.name ? 'Edit shelf' : 'Add shelf'}
+                                {/* {this.state.name ? 'Edit shelf' : 'Add shelf'} */}
+                                Add shelf
                             </Button>
                         </div>
                         {/* <div>

@@ -1,6 +1,7 @@
 import React, { ReactElement, Component } from 'react';
 import './ShelfCarousel.css';
 import { Paper } from '@material-ui/core';
+import Button from "@material-ui/core/Button";
 import { Link } from 'react-router-dom';
 import { BOOK_OVERVIEW } from '../routes';
 import AddBookShelf from '../book-display/AddBookShelf';
@@ -60,6 +61,7 @@ type ShelfCarouselProps = {
     books: Book[];
     img?: string;
     searchText: string;
+    onReloadRecom: () => void;
 }
 
 class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
@@ -79,6 +81,17 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
                 books: this.filterBooks()
             });
         } 
+    }
+
+    componentDidUpdate(prevProps: ShelfCarouselProps) {
+        // Check if the props have changed
+        if (prevProps !== this.props) {
+            this.setState({
+                title: this.props.title,
+                books: this.props.books,
+                img: this.props.img || ""
+            });
+        }
     }
 
     searchText = '';
@@ -112,6 +125,11 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
             <div className="shelf-container">
                 <span className="shelf-title">{this.state.title}</span>
                 <span className="view-all">View All</span>
+                {isRecommendations && (
+                    <div>
+                        <Button variant="outlined" onClick={this.props.onReloadRecom}>Reload recommendation</Button>
+                    </div>
+                )}
                 <div className="clear" />
                 <div className="books-and-shelf">
                     <div className="book-wrap">
@@ -119,6 +137,7 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
                         {!isRecommendations && <AddBookShelf />}
                         <div className="clear" />
                     </div>
+                    
                     <div className="shelf"></div>
                 </div>
             </div>

@@ -60,14 +60,15 @@ function getRandomBooks(books: Book[], numberOfBooks: number): Book[] {
     return recommendBooks;
 }
   
-function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]): Book[] {
+function recommendBooks(bookList: Book[], readBooks: Book[], readingBooks: Book[]): Book[] {
     // If both readBooks and readingBooks are empty, return random 5 books
     if (readBooks.length === 0 && readingBooks.length === 0) {
-      return getRandomBooks(Books, 5);
+      return getRandomBooks(bookList, 5);
     }
   
     const bookReadIng: Book[] = [...readBooks, ...readingBooks]; // list of books that were read or currently reading
-    const notbookRedIng = Books.filter((book) => !bookReadIng.includes(book));  // list of books that were NOT read NOR currently reading
+    const notbookRedIng = bookList.filter((book) => !bookReadIng.includes(book));  // list of books that were NOT read NOR currently reading
+    
   
     // Calculate genre counts based on readBooks and readingBooks
     const genreCounts: { [genre: string]: number } = {};
@@ -83,6 +84,7 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
         });
       });
     const sortedGenres = Object.keys(genreCounts).sort((a, b) => genreCounts[b] - genreCounts[a]); // sorts Books by Genre Count
+    
   
     const authorCounts: { [author: string]: number } = {};
     // Same thing for author
@@ -107,7 +109,7 @@ function recommendBooks(Books: Book[], readBooks: Book[], readingBooks: Book[]):
       1: [] // Book is present in topGenre
     };
   
-    Books.forEach((book) => {
+    bookList.forEach((book) => {
         // Assigns a score of 3 to the book
         if (book.bookGenre.some((genre) => topGenre.includes(genre)) 
         && topAuthor.includes(book.author.fullName)
@@ -168,7 +170,13 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
 
     componentDidMount() {
         this.fetchAllBooks();
+        // this.updateRecommendedBooks(); // Call the function to update recommendedBooks
     }
+
+    // updateRecommendedBooks() {
+    //     const recommendedBooks = recommendBooks(this.state.bookList, this.state.readBooks, this.state.readingBooks);
+    //     this.setState({ recommendedBooks }); // Update the state with recommendedBooks
+    // }
 
     fetchAllBooks = () => {
         BookAPI.fetchBooks().then(books => {
@@ -179,10 +187,12 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                 toReadBooks: books.filter(book => book.predefinedShelf.shelfName === "toReadBooks"),
                 readingBooks: books.filter(book => book.predefinedShelf.shelfName === "readingBooks"),
                 favoriteBooks: books.filter(book => book.favorite),
-                recommendedBooks: books.filter(book => book.predefinedShelf.shelfName === "recommendedBooks"),
+                recommendedBooks: recommendBooks(books, this.state.readBooks, this.state.readingBooks),
             });
         }).catch(error => console.error("Fetching books failed:", error));
     }
+
+   
 
     onAddBook(): void {
         console.log("add book done");
@@ -216,6 +226,14 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         this.setState({ shelves: newShelves });
     };
 
+    onReloadRecom = () => {
+        this.setState({
+            recommendedBooks: recommendBooks(this.state.bookList, this.state.readBooks, this.state.readingBooks),
+        });
+        console.log(this.state.recommendedBooks);
+    }
+    
+
     render(): ReactElement {
         const recommendedBooks = recommendBooks(this.state.bookList, this.state.readBooks, this.state.readingBooks);
         console.log(recommendedBooks);
@@ -244,10 +262,11 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                             didNotFinishBooks={this.state.didNotFinishBooks}
                             readingBooks={this.state.readingBooks} 
                             favoriteBooks={this.state.favoriteBooks} 
-                            recommendedBooks={recommendedBooks} 
+                            recommendedBooks={this.state.recommendedBooks} 
                             searchText={this.state.searchVal} 
                             shelves={this.state.shelves}
                             setShelf={this.setShelf}
+                            onReloadRecom={this.onReloadRecom}
                         />
                     )}
                 </div>
