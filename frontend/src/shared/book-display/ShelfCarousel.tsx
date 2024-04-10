@@ -120,6 +120,7 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
 
     render(): JSX.Element {
         const isRecommendations = this.props.title === "Recommendations";
+        const isFavorites = this.props.title === "Favorites";
         
         return (
             <div className="shelf-container">
@@ -134,7 +135,7 @@ class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
                 <div className="books-and-shelf">
                     <div className="book-wrap">
                         {this.renderShelfBook(this.state.books)}
-                        {!isRecommendations && <AddBookShelf />}
+                        {!isRecommendations && !isFavorites && <AddBookShelf /> }
                         <div className="clear" />
                     </div>
                     
